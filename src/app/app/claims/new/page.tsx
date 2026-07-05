@@ -99,7 +99,7 @@ function ClaimForm() {
 
           {policy && (
             <div className="panel-ice p-3 text-xs font-mono space-y-1">
-              <div className="text-slate-400">{formatServiceSlug(policy.service_slug)} — {policy.covered_component}</div>
+              <div className="text-slate-400">{formatServiceSlug(policy.service_slug)} - {policy.covered_component}</div>
               <div style={{ color: "#38BDF8" }}>Coverage: {formatGEN(policy.coverage_amount)}</div>
               <div className="text-slate-500">Window: {formatUnixTimestamp(policy.start_ts)} → {formatUnixTimestamp(policy.end_ts)}</div>
             </div>

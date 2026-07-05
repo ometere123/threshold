@@ -181,7 +181,7 @@ export default function PoolDetailPage() {
         <div className="panel p-5 space-y-3">
           <div className="section-header">Withdraw Available Capital</div>
           <p className="text-xs text-slate-500">
-            Only the pool owner can withdraw. You may withdraw up to {formatGEN(pool.available_capital)} — reserved
+            Only the pool owner can withdraw. You may withdraw up to {formatGEN(pool.available_capital)} - reserved
             exposure cannot be withdrawn.
           </p>
           <div className="grid grid-cols-2 gap-3">

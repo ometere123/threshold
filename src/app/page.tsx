@@ -3,7 +3,7 @@ import { WalletBar } from "@/components/shared/WalletBar";
 
 const WHY_ITEMS = [
   { icon: "🟢", title: "Uptime Has Real Cost", desc: "Status page and API outages cost hosted-service operators real money. No fast, automated payout exists today." },
-  { icon: "📡", title: "Public Evidence Exists", desc: "Status pages, incident histories, and uptime reports are already public — GenLayer validators can read them directly." },
+  { icon: "📡", title: "Public Evidence Exists", desc: "Status pages, incident histories, and uptime reports are already public - GenLayer validators can read them directly." },
   { icon: "🏦", title: "Funded, Not Promised", desc: "Cover is only as real as the capital behind it. Threshold pools hold real GEN, deposited on-chain." },
   { icon: "⚖️", title: "No Adjuster Bias", desc: "Manual claim review is slow and subjective. GenLayer validator consensus removes the single decision-maker." },
 ];
@@ -11,7 +11,7 @@ const WHY_ITEMS = [
 const HOW_ITEMS = [
   { step: "01", title: "Underwriter Funds a Pool", desc: "An underwriter deposits real GEN into a risk pool via a payable transaction and sets the service, component, and rate terms." },
   { step: "02", title: "Policyholder Buys Cover", desc: "A policyholder chooses a coverage amount and duration. The premium is calculated deterministically and paid as real GEN." },
-  { step: "03", title: "Contract Reserves Exposure", desc: "The coverage amount is reserved against the pool's available capital — it cannot be double-committed or withdrawn." },
+  { step: "03", title: "Contract Reserves Exposure", desc: "The coverage amount is reserved against the pool's available capital - it cannot be double-committed or withdrawn." },
   { step: "04", title: "Incident + Public Evidence", desc: "When an outage occurs, the policyholder submits a claim with a public evidence URL and incident summary." },
   { step: "05", title: "GenLayer Validator Consensus", desc: "Validators fetch the evidence, evaluate it against the policy terms, and reach non-deterministic consensus on a verdict." },
   { step: "06", title: "Real GEN Payout or No Payout", desc: "If the claim qualifies, the contract sends real GEN to the policyholder from the funded pool. If not, no payout is made." },
@@ -54,7 +54,7 @@ export default function Landing() {
           <p className="text-slate-400 text-lg leading-relaxed max-w-xl mx-auto mb-10">
             Underwriters deposit real GEN into risk pools. Policyholders buy service outage cover by
             paying real GEN premiums. When an incident happens, GenLayer validators evaluate public
-            evidence and the contract pays the policyholder from the funded pool — or it doesn&apos;t.
+            evidence and the contract pays the policyholder from the funded pool - or it doesn&apos;t.
           </p>
 
           <Link href="/app" className="btn-primary text-base px-8 py-3 inline-block">
@@ -67,7 +67,7 @@ export default function Landing() {
       <section className="border-y py-6 px-8" style={{ borderColor: "#1F2937", background: "rgba(56,189,248,0.03)" }}>
         <p className="text-center font-mono text-sm text-slate-400 max-w-3xl mx-auto">
           No fake pool capital. No admin-entered balances. Every GEN figure you see is a live read
-          from the deployed contract — deposits, premiums, reserved exposure, and payouts are all
+          from the deployed contract - deposits, premiums, reserved exposure, and payouts are all
           real StudioNet value transfers.
         </p>
       </section>

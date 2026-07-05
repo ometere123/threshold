@@ -2,30 +2,30 @@
   <img src="public/logo.svg" alt="Threshold logo" width="120" height="120" />
 </p>
 
-<h1 align="center">THRESHOLD — Funded Outage Cover Protocol</h1>
+<h1 align="center">THRESHOLD - Funded Outage Cover Protocol</h1>
 
 <p align="center">
 Real GEN-funded parametric outage cover on GenLayer. Underwriters deposit real GEN into risk pools.
 Policyholders buy cover with real GEN premiums. When an outage happens, GenLayer validators
 independently evaluate public evidence, reach non-deterministic consensus on a verdict, and the
-contract pays the policyholder from the funded pool — or it doesn't. No admin-entered capital, no
+contract pays the policyholder from the funded pool - or it doesn't. No admin-entered capital, no
 simulated balances, no human adjuster.
 </p>
 
 ## What it is
 
-Connect your wallet, fund a risk pool with real GEN, and set the terms — service, covered
+Connect your wallet, fund a risk pool with real GEN, and set the terms - service, covered
 component, premium rate, max payout, duration bounds. Policyholders buy cover by paying a
 deterministically-calculated premium, reserving exposure against the pool's real available
 capital. When an incident occurs, the policyholder files a claim with one public evidence URL.
 GenLayer's validator network fetches that URL directly, evaluates it against the policy terms, and
-reaches consensus on a verdict — the result is written to contract state, not a server or database.
+reaches consensus on a verdict - the result is written to contract state, not a server or database.
 
-- **Funded, not promised** — every pool capital figure is backed by a real `payable` GEN transfer, verifiable on StudioNet
-- **Deterministic pricing** — premiums are a fixed basis-points calculation on-chain, never LLM-decided
-- **AI consensus resolution** — GenLayer validators independently fetch evidence and reach agreement via `gl.eq_principle.prompt_comparative` before any verdict is stored
-- **Real payout path** — approved claims trigger an on-chain GEN transfer to the policyholder, not a UI status change
-- **No off-chain storage** — no database, no admin panel. All pool, policy, and claim state lives in the GenLayer contract
+- **Funded, not promised** - every pool capital figure is backed by a real `payable` GEN transfer, verifiable on StudioNet
+- **Deterministic pricing** - premiums are a fixed basis-points calculation on-chain, never LLM-decided
+- **AI consensus resolution** - GenLayer validators independently fetch evidence and reach agreement via `gl.eq_principle.prompt_comparative` before any verdict is stored
+- **Real payout path** - approved claims trigger an on-chain GEN transfer to the policyholder, not a UI status change
+- **No off-chain storage** - no database, no admin panel. All pool, policy, and claim state lives in the GenLayer contract
 
 ## How it works
 
@@ -43,15 +43,15 @@ When policy expires, reserved exposure is released
 ### For underwriters
 
 1. Create a risk pool with a real GEN deposit, a covered service/component, a premium rate, and duration bounds
-2. Fund the pool further at any time — anyone can deposit
-3. Withdraw unreserved capital at any time — reserved exposure can never be withdrawn
+2. Fund the pool further at any time - anyone can deposit
+3. Withdraw unreserved capital at any time - reserved exposure can never be withdrawn
 
 ### For policyholders
 
-1. Buy cover: pick a pool, a coverage amount, and a duration — pay the deterministically-calculated premium in real GEN
+1. Buy cover: pick a pool, a coverage amount, and a duration - pay the deterministically-calculated premium in real GEN
 2. If an outage happens, submit a claim with a public evidence URL and an incident summary
 3. Trigger GenLayer validator consensus to resolve the claim
-4. If approved, receive real GEN from the pool. If denied, no payout — the policy runs its course
+4. If approved, receive real GEN from the pool. If denied, no payout - the policy runs its course
 
 ## Claim resolution
 
@@ -90,7 +90,7 @@ available_capital = pool_capital - reserved_exposure
 ```
 
 `buy_policy` rejects any purchase where `coverage_amount > available_capital`, and
-`withdraw_available` rejects any withdrawal that would touch reserved exposure — so
+`withdraw_available` rejects any withdrawal that would touch reserved exposure - so
 `reserved_exposure <= pool_capital` holds at all times. See [`FUNDING_MODEL.md`](FUNDING_MODEL.md).
 
 ## Contract
@@ -108,16 +108,16 @@ available_capital = pool_capital - reserved_exposure
 
 | Layer | Tech |
 |---|---|
-| Intelligent contract | GenLayer Python — `@allow_storage` dataclasses, `TreeMap` storage, `gl.public.write.payable`, `gl.nondet.exec_prompt`, `gl.eq_principle.prompt_comparative` |
+| Intelligent contract | GenLayer Python - `@allow_storage` dataclasses, `TreeMap` storage, `gl.public.write.payable`, `gl.nondet.exec_prompt`, `gl.eq_principle.prompt_comparative` |
 | Frontend | Next.js 16 App Router (Turbopack) · TypeScript · Tailwind CSS 4 |
 | Web3 | `genlayer-js` 1.1.8 · `ethers` (injected wallet provider) |
-| Wallet | Any injected EIP-1193 provider — MetaMask, Rabby, etc. |
-| Storage | None — all state on-chain |
+| Wallet | Any injected EIP-1193 provider - MetaMask, Rabby, etc. |
+| Storage | None - all state on-chain |
 
 ## Repository layout
 
 ```
-contract/threshold.py       GenLayer intelligent contract — all on-chain accounting and logic
+contract/threshold.py       GenLayer intelligent contract - all on-chain accounting and logic
 scripts/                    Key generation, faucet funding, deployment, integration tests
 src/lib/contract.ts         genlayer-js client wrapper (typed reads/writes)
 src/lib/types.ts            Pool / Policy / Claim TypeScript types
@@ -157,13 +157,13 @@ node scripts/test-contract.mjs                 # 20-case funded integration test
 
 ## Further reading
 
-- [`CONTRACT.md`](CONTRACT.md) — contract architecture and method reference
-- [`FUNDING_MODEL.md`](FUNDING_MODEL.md) — pool accounting and solvency invariants
-- [`CLAIM_RESOLUTION.md`](CLAIM_RESOLUTION.md) — GenLayer validator consensus flow
-- [`FRONTEND.md`](FRONTEND.md) — page map and wallet integration
-- [`TESTING.md`](TESTING.md) — the 20-case integration test suite
-- [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md) — a walkthrough script for demoing the protocol live
-- [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md) — honest constraints of the current MVP
+- [`CONTRACT.md`](CONTRACT.md) - contract architecture and method reference
+- [`FUNDING_MODEL.md`](FUNDING_MODEL.md) - pool accounting and solvency invariants
+- [`CLAIM_RESOLUTION.md`](CLAIM_RESOLUTION.md) - GenLayer validator consensus flow
+- [`FRONTEND.md`](FRONTEND.md) - page map and wallet integration
+- [`TESTING.md`](TESTING.md) - the 20-case integration test suite
+- [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md) - a walkthrough script for demoing the protocol live
+- [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md) - honest constraints of the current MVP
 
 ## Disclaimer
 

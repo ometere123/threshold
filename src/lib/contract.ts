@@ -1,4 +1,4 @@
-// GenLayer contract client for Threshold — funded outage cover protocol
+// GenLayer contract client for Threshold - funded outage cover protocol
 // Uses genlayer-js 1.1.8. Every capital figure is a live contract read.
 // There is no mock/demo data mode: without a deployed contract address,
 // read calls return null/empty and write calls throw.

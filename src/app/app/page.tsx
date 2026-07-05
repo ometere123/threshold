@@ -57,11 +57,11 @@ export default function RiskDeskPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-white">Risk Desk</h1>
-          <p className="text-slate-400 text-sm mt-1">Funded parametric outage cover — real GEN, on-chain accounting</p>
+          <p className="text-slate-400 text-sm mt-1">Funded parametric outage cover - real GEN, on-chain accounting</p>
         </div>
         {!configured && (
           <div className="panel px-3 py-2 text-xs font-mono text-red-400" style={{ borderColor: "rgba(220,38,38,0.3)" }}>
-            No contract configured — set NEXT_PUBLIC_CONTRACT_ADDRESS
+            No contract configured - set NEXT_PUBLIC_CONTRACT_ADDRESS
           </div>
         )}
       </div>

@@ -10,14 +10,14 @@
 - `incident_summary` is at least 10 characters
 
 Unlike the earlier medical-cold-chain draft of this protocol, v1 only accepts a **single** public
-evidence URL per claim (a status page, incident history, or uptime report) — not a set of mixed
+evidence URL per claim (a status page, incident history, or uptime report) - not a set of mixed
 public/private sources. This keeps the evaluation surface small and avoids ambiguity about which
 source "wins" during consensus.
 
 Submitting a claim moves the policy to `claimed` status; only one claim is supported per policy in
 v1 (see [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md)).
 
-## Resolution — GenLayer non-deterministic consensus
+## Resolution - GenLayer non-deterministic consensus
 
 `resolve_claim(claim_id)` is a public write method (not payable) that anyone can call once a claim
 is `submitted`. It:
@@ -93,12 +93,12 @@ contract invariant violation.
   policy's full coverage amount, `claim.status` becomes `payout_queued`, `policy.status` becomes
   `paid`, and GEN is sent to the policyholder via `_Recipient(...).emit_transfer(value=...)`.
 - **Denied (payout = 0):** `claim.status` becomes `denied` (or `approved` with zero payout is not
-  possible by construction — non-qualifying verdicts always map to `denied`), and `policy.status`
+  possible by construction - non-qualifying verdicts always map to `denied`), and `policy.status`
   reverts to `active` so the policyholder could theoretically appeal by waiting for expiry or the
   policy simply runs its course.
 
 `payout_queued` rather than `paid` is used at the claim level because the external value transfer
-is emitted, not awaited in-contract — GenLayer finalizes it as part of the same transaction, but the
+is emitted, not awaited in-contract - GenLayer finalizes it as part of the same transaction, but the
 naming reflects that this is an outbound transfer request, not a separately-confirmed receipt.
 
 ## Idempotency

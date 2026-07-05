@@ -1,7 +1,7 @@
 # Testing
 
 `scripts/test-contract.mjs` runs a 20-case funded integration test suite directly against the
-deployed StudioNet contract — no mocks, no local simulator. It uses `.test-wallets.json` (generated
+deployed StudioNet contract - no mocks, no local simulator. It uses `.test-wallets.json` (generated
 by `scripts/generate-keys.mjs` and funded by `scripts/fund-wallets.mjs` via the StudioNet
 `fundAccount` faucet RPC).
 
@@ -36,7 +36,7 @@ node scripts/test-contract.mjs
 20. Expired active policy should release reserved exposure
 
 Cases 12-13 depend on GenLayer's non-deterministic validator consensus, which typically takes
-60-120 seconds on StudioNet — occasionally longer under load. The test script polls transaction
+60-120 seconds on StudioNet - occasionally longer under load. The test script polls transaction
 status for up to 75 seconds per write; if a resolution genuinely takes longer than that, the
 harness reports a benign timeout on that one step while the underlying transaction still lands
 (confirmed independently via case 17: a duplicate resolution attempt correctly reverts once the
@@ -58,6 +58,6 @@ has actually elapsed.
 npx tsc --noEmit
 ```
 
-The frontend has no separate unit test suite in this MVP — correctness is verified through the
+The frontend has no separate unit test suite in this MVP - correctness is verified through the
 funded contract integration suite plus manual browser verification of each page against live
 contract data (see `DEMO_SCRIPT.md`).

@@ -109,7 +109,7 @@ export default function NewPolicyPage() {
             <select className="input-field" value={poolId} onChange={(e) => setPoolId(e.target.value)}>
               {pools.map((p) => (
                 <option key={p.pool_id} value={p.pool_id}>
-                  {formatServiceSlug(p.service_slug)} — {p.covered_component} ({p.pool_id})
+                  {formatServiceSlug(p.service_slug)} - {p.covered_component} ({p.pool_id})
                 </option>
               ))}
             </select>
@@ -135,7 +135,7 @@ export default function NewPolicyPage() {
           </div>
 
           <div className="panel p-5">
-            <div className="section-header mb-3">Premium — Deterministic Calculation</div>
+            <div className="section-header mb-3">Premium - Deterministic Calculation</div>
             <div className="font-mono text-sm space-y-2">
               <div className="flex justify-between">
                 <span className="text-slate-500">Coverage Amount</span>
@@ -143,7 +143,7 @@ export default function NewPolicyPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Premium Rate</span>
-                <span className="text-white">{selectedPool ? (Number(selectedPool.min_premium_bps) / 100).toFixed(2) : "—"}%</span>
+                <span className="text-white">{selectedPool ? (Number(selectedPool.min_premium_bps) / 100).toFixed(2) : "-"}%</span>
               </div>
               <hr className="divider" />
               <div className="flex justify-between text-base">

@@ -234,7 +234,7 @@ async function runTests() {
     if (claim.status === "payout_queued" || claim.status === "approved") {
       pass(`Claim resolved: status=${claim.status}, payout=${claim.payout_amount}`);
     } else if (claim.status === "denied") {
-      pass(`Claim resolved (denied — no qualifying outage found by validators): ${claim.reason}`);
+      pass(`Claim resolved (denied - no qualifying outage found by validators): ${claim.reason}`);
     } else {
       fail(`Unexpected claim status after resolution: ${claim.status}`);
     }
@@ -252,7 +252,7 @@ async function runTests() {
       fail(`claims_paid mismatch: got ${pool.claims_paid}, expected ${claim.payout_amount}`);
     }
   } else {
-    pass(`Claim denied — claims_paid correctly unchanged (${pool.claims_paid})`);
+    pass(`Claim denied - claims_paid correctly unchanged (${pool.claims_paid})`);
   }
 
   // 15. Pool reserved_exposure should decrease after paid policy closes
@@ -264,7 +264,7 @@ async function runTests() {
       fail(`reserved_exposure not released: ${pool.reserved_exposure}`);
     }
   } else {
-    pass(`Policy still active/denied — reserved_exposure remains ${pool.reserved_exposure}`);
+    pass(`Policy still active/denied - reserved_exposure remains ${pool.reserved_exposure}`);
   }
 
   // 16. Policy status should become paid (if approved)
@@ -316,7 +316,7 @@ async function runTests() {
       "Premature expiry rejected"
     );
 
-    pass("Short policy created for expiry test (full expiry wait skipped — coverage window is 1hr; see KNOWN_LIMITATIONS.md for expiry timing notes)");
+    pass("Short policy created for expiry test (full expiry wait skipped - coverage window is 1hr; see KNOWN_LIMITATIONS.md for expiry timing notes)");
   } catch (err) {
     fail("expire_policy setup", err);
   }

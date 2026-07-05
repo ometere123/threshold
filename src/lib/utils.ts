@@ -5,7 +5,7 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 }
 
 export function formatDate(iso: string): string {
-  if (!iso) return "—";
+  if (!iso) return "-";
   try {
     return new Date(iso).toLocaleDateString("en-GB", {
       day: "2-digit",
@@ -18,7 +18,7 @@ export function formatDate(iso: string): string {
 }
 
 export function formatDateTime(iso: string): string {
-  if (!iso) return "—";
+  if (!iso) return "-";
   try {
     return new Date(iso).toLocaleString("en-GB", {
       day: "2-digit",
@@ -34,7 +34,7 @@ export function formatDateTime(iso: string): string {
 }
 
 export function formatUnixTimestamp(ts: number): string {
-  if (!ts) return "—";
+  if (!ts) return "-";
   return formatDateTime(new Date(ts * 1000).toISOString());
 }
 

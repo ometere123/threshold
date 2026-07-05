@@ -69,7 +69,7 @@ export default function NewPoolPage() {
         <h1 className="font-display text-2xl font-bold text-white">Create Risk Pool</h1>
         <p className="text-slate-400 text-sm mt-1">
           Deposit real GEN to underwrite parametric outage cover. This transaction sends native GEN
-          to the contract — the pool&apos;s capital is exactly what you deposit here, nothing is simulated.
+          to the contract - the pool&apos;s capital is exactly what you deposit here, nothing is simulated.
         </p>
       </div>
 

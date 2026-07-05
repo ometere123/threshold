@@ -6,7 +6,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Threshold — Funded Parametric Outage Cover",
+  title: "Threshold - Funded Parametric Outage Cover",
   description:
     "Underwriters deposit real GEN into risk pools. Policyholders buy outage cover with real GEN premiums. GenLayer validators evaluate public evidence and pay claims from the funded pool.",
   icons: {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
   },
   openGraph: {
-    title: "Threshold — Funded Parametric Outage Cover",
+    title: "Threshold - Funded Parametric Outage Cover",
     description:
       "Real GEN-funded parametric outage cover on GenLayer, with validator consensus claim resolution and on-chain payouts.",
     siteName: "Threshold",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Threshold — Funded Parametric Outage Cover",
+    title: "Threshold - Funded Parametric Outage Cover",
     description:
       "Fund real GEN risk pools, buy outage cover, and resolve claims through GenLayer validator consensus.",
     images: ["/logo.svg"],

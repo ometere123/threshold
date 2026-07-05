@@ -9,12 +9,12 @@ capital number into.
 
 A pool tracks four raw counters, each only ever incremented by a real value transfer:
 
-- `total_deposited` — incremented by `create_pool`'s initial deposit and every `deposit_to_pool` call
-- `premiums_collected` — incremented by the `gl.message.value` sent with every `buy_policy` call
-- `total_withdrawn` — incremented by `withdraw_available`, which also sends GEN out to the owner
-- `claims_paid` — incremented by `resolve_claim` when a claim is approved and GEN is sent to the policyholder
+- `total_deposited` - incremented by `create_pool`'s initial deposit and every `deposit_to_pool` call
+- `premiums_collected` - incremented by the `gl.message.value` sent with every `buy_policy` call
+- `total_withdrawn` - incremented by `withdraw_available`, which also sends GEN out to the owner
+- `claims_paid` - incremented by `resolve_claim` when a claim is approved and GEN is sent to the policyholder
 
-From these, two derived figures are computed on every read — never stored, so they can never drift
+From these, two derived figures are computed on every read - never stored, so they can never drift
 from the underlying deposits:
 
 ```python
@@ -37,7 +37,7 @@ reserved_exposure <= pool_capital
 This is enforced at the point of underwriting, not after the fact: `buy_policy` rejects any
 purchase where `coverage_amount > available_capital`, so the contract can never reserve more
 exposure than it actually holds. `withdraw_available` enforces the same bound in the other
-direction — an owner can never withdraw funds that are backing a reserved policy.
+direction - an owner can never withdraw funds that are backing a reserved policy.
 
 ## Premium calculation is deterministic
 

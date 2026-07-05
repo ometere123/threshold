@@ -78,7 +78,7 @@ async function deploy() {
       // On StudioNet the contract address is sometimes in a different field
       console.log("\n⚠️  Could not extract contract address from receipt.");
       console.log("   Using tx hash as contract reference. Check explorer for actual address.");
-      contractAddress = txHash; // Temporary — user should check explorer
+      contractAddress = txHash; // Temporary - user should check explorer
     }
 
     console.log("\n");

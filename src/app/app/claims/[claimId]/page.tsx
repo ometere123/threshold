@@ -133,14 +133,14 @@ export default function ClaimDetailPage() {
         </a>
         <p className="text-xs text-slate-500 mt-2">
           GenLayer validators fetch this URL directly and independently reach consensus on its
-          content via the Equivalence Principle — no single validator&apos;s reading is trusted alone.
+          content via the Equivalence Principle - no single validator&apos;s reading is trusted alone.
         </p>
       </div>
 
       {/* Validator Replay */}
       {isResolved ? (
         <div className="panel p-5 space-y-4">
-          <div className="section-header">Validator Replay — Consensus Result</div>
+          <div className="section-header">Validator Replay - Consensus Result</div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
               <div className="field-label">Verdict</div>

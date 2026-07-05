@@ -138,7 +138,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         params: [{ chainId: STUDIONET_CHAIN_ID_HEX }],
       });
     } catch (switchError: any) {
-      // Chain not added — add it
+      // Chain not added - add it
       if (switchError.code === 4902) {
         try {
           await eth.request({

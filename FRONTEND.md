@@ -1,6 +1,6 @@
 # Frontend
 
-Next.js 16 (Turbopack) app. All capital numbers are contract reads — there is no mock-data mode in
+Next.js 16 (Turbopack) app. All capital numbers are contract reads - there is no mock-data mode in
 this version of Threshold; without `NEXT_PUBLIC_CONTRACT_ADDRESS` set, reads return empty/null and
 writes throw.
 
@@ -8,19 +8,19 @@ writes throw.
 
 | Route | Purpose |
 |---|---|
-| `/` | Landing page — funded outage cover positioning |
-| `/app` | Risk Desk — live dashboard stats, active cover, open claims, recent verdicts |
+| `/` | Landing page - funded outage cover positioning |
+| `/app` | Risk Desk - live dashboard stats, active cover, open claims, recent verdicts |
 | `/app/pools` | List of risk pools |
-| `/app/pools/new` | Create Pool — payable, requires initial GEN deposit |
-| `/app/pools/[poolId]` | Pool detail — full accounting breakdown, Fund Pool, Withdraw (owner only) |
-| `/app/policies` | My Policies — toggle between "mine" (by connected wallet) and all |
-| `/app/policies/new` | Buy Cover — payable, premium calculated client-side and verified on-chain |
-| `/app/policies/[policyId]` | Policy detail — coverage terms, Submit Claim, Expire Policy |
+| `/app/pools/new` | Create Pool - payable, requires initial GEN deposit |
+| `/app/pools/[poolId]` | Pool detail - full accounting breakdown, Fund Pool, Withdraw (owner only) |
+| `/app/policies` | My Policies - toggle between "mine" (by connected wallet) and all |
+| `/app/policies/new` | Buy Cover - payable, premium calculated client-side and verified on-chain |
+| `/app/policies/[policyId]` | Policy detail - coverage terms, Submit Claim, Expire Policy |
 | `/app/claims` | Claims list |
-| `/app/claims/new` | Submit Claim — policy ID, evidence URL, incident summary |
-| `/app/claims/[claimId]` | Claim detail / Validator Replay — evidence, verdict, confidence, payout band, reason, payout amount, Resolve button |
-| `/app/verdicts` | Verdict Archive — filterable by verdict / payout band |
-| `/app/accounting` | Solvency View — contract balance + full accounting breakdown |
+| `/app/claims/new` | Submit Claim - policy ID, evidence URL, incident summary |
+| `/app/claims/[claimId]` | Claim detail / Validator Replay - evidence, verdict, confidence, payout band, reason, payout amount, Resolve button |
+| `/app/verdicts` | Verdict Archive - filterable by verdict / payout band |
+| `/app/accounting` | Solvency View - contract balance + full accounting breakdown |
 
 ## Wallet integration
 

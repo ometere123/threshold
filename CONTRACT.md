@@ -5,7 +5,7 @@ written in Python against `py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmws
 
 ## Storage model
 
-Storage uses `@allow_storage @dataclass` records inside `TreeMap`s — the pattern that reliably
+Storage uses `@allow_storage @dataclass` records inside `TreeMap`s - the pattern that reliably
 deploys on GenLayer (a plain `dict` is not storage-safe and fails to compile as a `TreeMap` value
 type):
 
@@ -32,7 +32,7 @@ class Threshold(gl.Contract):
 ```
 
 All amounts are `u256` denominated in **wei** (1 GEN = 10^18 wei). All view methods return plain
-`dict`/`list` — genlayer-js decodes these directly into JS objects, no manual JSON parsing needed
+`dict`/`list` - genlayer-js decodes these directly into JS objects, no manual JSON parsing needed
 on the frontend for top-level values (nested JSON-string fields don't exist in this version; every
 field is a first-class primitive).
 
@@ -45,7 +45,7 @@ min_premium_bps, max_policy_payout, min_duration_seconds, max_duration_seconds
 created_at, created_seq
 ```
 
-`pool_capital` and `available_capital` are not stored — they're computed on every read (see
+`pool_capital` and `available_capital` are not stored - they're computed on every read (see
 [`FUNDING_MODEL.md`](FUNDING_MODEL.md)).
 
 ## Policy fields
@@ -108,5 +108,5 @@ _Recipient(Address(str(policy.holder))).emit_transfer(value=int(payout_amount))
 ```
 
 This is only ever called at the end of `resolve_claim` / `withdraw_available`, after all storage
-state (pool accounting, claim/policy status) has already been finalized — never speculatively, and
+state (pool accounting, claim/policy status) has already been finalized - never speculatively, and
 never using an `on="accepted"` hook.

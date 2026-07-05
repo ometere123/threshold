@@ -39,7 +39,7 @@ export default function AccountingPage() {
       <div>
         <h1 className="font-display text-2xl font-bold text-white">Solvency View</h1>
         <p className="text-slate-400 text-sm mt-1">
-          Every figure below is a live read from the deployed contract — nothing here is entered
+          Every figure below is a live read from the deployed contract - nothing here is entered
           manually or simulated.
         </p>
       </div>
@@ -62,7 +62,7 @@ export default function AccountingPage() {
         <p className="text-xs text-slate-500 mt-2">
           Read via <code className="font-mono text-cyan-400">get_contract_balance</code>. If
           StudioNet does not expose a balance query to the contract runtime, this falls back to{" "}
-          <code className="font-mono text-cyan-400">0</code> — treat{" "}
+          <code className="font-mono text-cyan-400">0</code> - treat{" "}
           <span className="text-white">Pool Capital</span> below as the authoritative accounting
           figure in that case, since it is derived entirely from real deposit/premium/withdrawal/payout
           transactions.
