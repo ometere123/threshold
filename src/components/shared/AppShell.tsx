@@ -30,11 +30,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       >
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <rect x="2" y="2" width="16" height="16" rx="1" stroke="#38BDF8" strokeWidth="1.5" />
-              <path d="M6 10h8M10 6v8" stroke="#38BDF8" strokeWidth="1.5" strokeLinecap="round" />
-              <circle cx="10" cy="10" r="2" fill="#38BDF8" opacity="0.3" />
-            </svg>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="Threshold" width={20} height={20} className="rounded" />
             <span className="font-display font-semibold text-sm tracking-wide text-white">
               THRESHOLD
             </span>

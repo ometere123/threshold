@@ -1,0 +1,21 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="256" height="256" rx="48" fill="#07111F"/>
+  <rect x="28" y="28" width="200" height="200" rx="24" stroke="#38BDF8" stroke-width="6" fill="none" opacity="0.35"/>
+
+  <!-- threshold baseline -->
+  <line x1="52" y1="176" x2="204" y2="176" stroke="#38BDF8" stroke-width="6" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- signal path crossing the threshold -->
+  <path
+    d="M52 152 L92 152 L112 96 L144 200 L164 128 L204 128"
+    stroke="#38BDF8"
+    stroke-width="10"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+
+  <!-- excursion marker where the signal crosses the threshold -->
+  <circle cx="144" cy="200" r="12" fill="#38BDF8"/>
+  <circle cx="144" cy="200" r="20" stroke="#38BDF8" stroke-width="4" opacity="0.4"/>
+</svg>

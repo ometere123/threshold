@@ -23,11 +23,8 @@ export default function Landing() {
       {/* Nav */}
       <header className="flex items-center justify-between px-8 py-4 border-b" style={{ borderColor: "#1F2937" }}>
         <div className="flex items-center gap-2">
-          <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
-            <rect x="2" y="2" width="16" height="16" rx="1" stroke="#38BDF8" strokeWidth="1.5" />
-            <path d="M6 10h8M10 6v8" stroke="#38BDF8" strokeWidth="1.5" strokeLinecap="round" />
-            <circle cx="10" cy="10" r="2" fill="#38BDF8" opacity="0.3" />
-          </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.svg" alt="Threshold" width={22} height={22} className="rounded" />
           <span className="font-display font-semibold text-sm tracking-widest text-white">THRESHOLD</span>
         </div>
         <WalletBar />
