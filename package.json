@@ -6,12 +6,25 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate:keys": "node scripts/generate-keys.mjs",
+    "deploy:contract": "node scripts/deploy.mjs",
+    "test:contract": "node scripts/test-contract.mjs"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/space-grotesk": "^5.2.10",
+    "@tanstack/react-query": "^5.101.2",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.4.0",
+    "ethers": "^6.17.0",
+    "genlayer-js": "^1.1.8",
+    "lucide-react": "^1.23.0",
     "next": "16.2.10",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "tailwind-merge": "^3.6.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
