@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Threshold Demo Fixture - Minor Degradation</title></head>
+<body>
+<p><strong>[TEST FIXTURE - NOT A REAL INCIDENT]</strong> This static page exists solely so the
+Threshold protocol's integration tests can exercise the resolve_claim partial-payout path against
+a public, non-JS-rendered evidence URL. It is not a report about any real company or service.</p>
+
+<h1>Demo Status Page - Incident Report</h1>
+<p>Service: threshold-demo-uptime</p>
+<p>Component: Demo Web Hosting</p>
+<p>Status: Resolved</p>
+<p>Impact: Minor</p>
+
+<h2>Timeline</h2>
+<ul>
+<li>2026-07-09 09:10 UTC - Investigating: Demo Web Hosting is experiencing slower than normal response times for a subset of requests.</li>
+<li>2026-07-09 09:20 UTC - Identified: Approximately 15% of requests to Demo Web Hosting are seeing elevated latency. The component remains reachable and most requests succeed normally.</li>
+<li>2026-07-09 10:05 UTC - Resolved: Demo Web Hosting latency has returned to normal. Total degraded window was approximately 55 minutes with no full loss of availability.</li>
+</ul>
+
+<p>Summary: Demo Web Hosting experienced a brief, partial performance degradation (elevated
+latency for a minority of requests) for under an hour on 2026-07-09. The component never went
+fully down and most requests were served normally throughout. This was not scheduled maintenance
+and was not caused by a third-party or excluded event.</p>
+</body>
+</html>
