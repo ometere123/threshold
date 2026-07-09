@@ -14,7 +14,21 @@ Payouts depend on public evidence URLs being accessible to validators. If a stat
 incident-history URL is down, rate-limited, blocked by bot protection, or requires authentication
 at resolution time, the claim will most likely resolve as `insufficient_evidence` with no payout -
 there is no retry mechanism or evidence re-submission flow in v1 beyond filing a new claim (which
-isn't supported for a policy that already has one).
+isn't supported for a policy that already has one). Evidence must also be `gl.nondet.web.render`-
+fetchable as HTML - client-side-rendered (JS SPA) pages, such as a statuspage.io site's own
+`/history` index or its per-incident detail pages, typically return only page chrome with no
+incident content; the incident's underlying JSON API endpoint (e.g.
+`<status-page>/api/v2/incidents/<id>.json`) is far more reliable evidence for this reason.
+
+Because a policy's coverage window always starts at purchase time (`buy_policy` cannot backdate
+`start_ts`), a real-world incident that has already happened - even one that happened earlier the
+same day - will usually resolve `outside_policy_window` rather than `qualifying_outage`, since the
+incident predates the policy. This is correct contract behavior, not a bug, but it does mean a
+freshly-bought policy can only ever be paid out against an incident that occurs *after* purchase.
+Verdicts near a same-day boundary can also vary between validator runs, since the LLM is reasoning
+about the evidence's stated incident date versus the policy's coverage-window dates rather than
+doing exact clock-time arithmetic; the prompt now supplies human-readable UTC dates (not just raw
+unix timestamps) for the coverage window to reduce this, but it does not eliminate it entirely.
 
 The claimant's incident summary is never treated as proof by itself. It only tells validators what
 to look for in the fetched public evidence. If the fetched evidence does not independently support

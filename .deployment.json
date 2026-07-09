@@ -1,8 +1,8 @@
 {
-  "contractAddress": "0x061d4D3db6d4Ea0aB891D244740AEf08858Fe52A",
-  "transactionHash": "",
+  "contractAddress": "0x80de84f79610e0873b0a6A119c9ad8B01cA1e1D5",
+  "transactionHash": "0x0673a60a90ec7479ab4656cdc1e3b386f8c444e8c94fd81c52ed92b6b73d32bf",
   "network": "StudioNet",
   "chainId": 61999,
-  "deployedAt": "",
-  "explorerUrl": "https://explorer-studio.genlayer.com/address/0x061d4D3db6d4Ea0aB891D244740AEf08858Fe52A"
+  "deployedAt": "2026-07-09T20:50:12.351Z",
+  "explorerUrl": "https://explorer-studio.genlayer.com/tx/0x0673a60a90ec7479ab4656cdc1e3b386f8c444e8c94fd81c52ed92b6b73d32bf"
 }

@@ -131,7 +131,7 @@ async function runTests() {
   let pool;
   try {
     await writeAndWait(underwriterClient, "create_pool", [
-      poolId, "status_page_uptime", "api_gateway", 500n, 100n * GEN, 3600n, 30n * 24n * 3600n,
+      poolId, "threshold-demo-uptime", "Demo API Gateway", 500n, 100n * GEN, 3600n, 30n * 24n * 3600n,
     ], 500n * GEN, "create_pool");
     pool = await read(underwriterClient, "get_pool", [poolId]);
     pass(`Pool created: ${pool.pool_id}, deposited=${pool.total_deposited}`);
@@ -214,8 +214,10 @@ async function runTests() {
   let claim;
   try {
     await writeAndWait(policyholderClient, "submit_claim", [
-      policyId, claimId, "https://www.githubstatus.com/history",
-      "GitHub API gateway experienced a major outage affecting API Requests component for several hours, as documented on the public status history page.",
+      policyId, claimId,
+      "https://raw.githubusercontent.com/ometere123/threshold/master/public/test-fixtures/demo-outage-full.html",
+      "Demo API Gateway has a complete, unplanned, currently-ongoing outage (100% error rate), " +
+      "first reported today and not yet resolved, as documented on the public demo status page.",
     ], 0n, "submit_claim");
     claim = await read(policyholderClient, "get_claim", [claimId]);
     pass(`Claim submitted: ${claim.claim_id}, status=${claim.status}`);

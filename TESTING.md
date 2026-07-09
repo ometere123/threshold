@@ -47,10 +47,39 @@ first one has actually settled).
 The suite has been run against multiple live deployments during development. Confirmed outcomes
 include: real GEN deposits reflected exactly in `pool_capital`, premium enforcement blocking
 under-paid purchases, reserved exposure correctly increasing/decreasing across the policy
-lifecycle, a real GenLayer LLM verdict (`insufficient_evidence` / `qualifying_outage` depending on
-evidence reachability) driving payout amounts, owner-gated withdrawals respecting the
-available-capital bound, and premature `expire_policy` calls reverting until the coverage window
-has actually elapsed.
+lifecycle, a real GenLayer LLM verdict driving payout amounts, owner-gated withdrawals respecting
+the available-capital bound, and premature `expire_policy` calls reverting until the coverage
+window has actually elapsed.
+
+Case 11's evidence URL points at a public test fixture
+(`public/test-fixtures/demo-outage-full.html`, served via raw.githubusercontent.com) describing an
+ongoing full outage, rather than a real third-party status page. This is deliberate: real-world
+incidents are always dated *before* a freshly-purchased policy's coverage window starts (policies
+cannot be backdated), so they correctly resolve as `outside_policy_window` even when the outage
+itself was real and severe (see below). The fixture is the only reliable way to exercise the full
+`qualifying_outage` -> `payout_queued` -> GEN transfer path in an automated run.
+
+## Evidence-fetch bug found and fixed
+
+`resolve_claim` originally called `gl.get_webpage(evidence_url, mode="text")`, which does not exist
+in the deployed GenLayer runtime - there is no `text` mode and no top-level `gl.get_webpage`; the
+real API is `gl.nondet.web.render(url, mode="html")`, and it must be called from inside a nondet
+block. Every claim was silently failing evidence fetch and defaulting to `insufficient_evidence`
+regardless of how good the evidence was. Fixed by moving the fetch inside the `get_verdict()`
+nondet closure and switching to `gl.nondet.web.render(url, mode="html")`, with a new
+`_strip_html()` helper (stdlib `re`) since only `html`/`screenshot` modes exist. The prompt also
+now passes human-readable UTC dates for the coverage window alongside the raw unix timestamps, so
+the LLM verdict doesn't have to do epoch math to judge whether evidence falls inside the window.
+
+Verified live via `scripts/populate-live.mjs` against a real deployment (no mocks, real GenLayer
+StudioNet validator consensus):
+
+| Scenario | Evidence | Verdict | Outcome |
+|---|---|---|---|
+| Real GitHub Actions critical incident | `githubstatus.com` incident JSON API | `outside_policy_window` | Correctly denied - incident predates policy purchase |
+| Real GitHub Pages moderate incident | `githubstatus.com` incident JSON API | `outside_policy_window` | Correctly denied - incident predates policy purchase |
+| Fixture: full outage, ongoing | `public/test-fixtures/demo-outage-full.html` | `qualifying_outage`, band `full` | **`payout_queued`, full coverage amount transferred** |
+| Fixture: minor degradation | `public/test-fixtures/demo-outage-minor.html` | `minor_degradation`, band `partial` | **`payout_queued`, 50% of coverage amount transferred** |
 
 ## Type checking
 

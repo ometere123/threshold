@@ -2,6 +2,7 @@
 # { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }
 
 import json
+import re
 from dataclasses import dataclass
 from genlayer import *
 
@@ -29,6 +30,17 @@ NO_PAYOUT_VERDICTS = {
     "excluded_event",
     "no_incident",
 }
+
+
+def _strip_html(html: str) -> str:
+    # gl.nondet.web.render(mode="html") returns raw markup; there is no "text" mode,
+    # so script/style blocks and tags are stripped here to keep the prompt readable
+    # and within its character budget.
+    html = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", html)
+    html = re.sub(r"(?s)<[^>]+>", " ", html)
+    html = re.sub(r"&nbsp;", " ", html)
+    html = re.sub(r"\s+", " ", html)
+    return html.strip()
 
 
 @gl.evm.contract_interface
@@ -146,6 +158,11 @@ class Threshold(gl.Contract):
 
         raw = gl.message_raw["datetime"]
         return int(datetime.fromisoformat(raw.replace("Z", "+00:00")).timestamp())
+
+    def _ts_to_iso(self, ts: int) -> str:
+        from datetime import datetime, timezone
+
+        return datetime.fromtimestamp(int(ts), tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
     def _is_rejected_evidence_url(self, url: str) -> bool:
         lowered = url.strip().lower()
@@ -485,17 +502,20 @@ class Threshold(gl.Contract):
         pool = self.pools[claim.pool_id]
 
         evidence_url = claim.evidence_url
-
-        if self._is_rejected_evidence_url(evidence_url):
-            evidence = {"status": "rejected_non_public_url", "content": ""}
-        else:
-            try:
-                page = gl.get_webpage(evidence_url, mode="text")
-                evidence = {"status": "fetched", "content": (page or "")[:2000]}
-            except Exception as e:
-                evidence = {"status": "inaccessible", "content": str(e)[:200]}
+        evidence_rejected = self._is_rejected_evidence_url(evidence_url)
 
         def get_verdict() -> str:
+            # The web fetch must happen inside this nondet block (leader and each
+            # validator independently render the page); it cannot run outside it.
+            if evidence_rejected:
+                evidence = {"status": "rejected_non_public_url", "content": ""}
+            else:
+                try:
+                    raw_html = gl.nondet.web.render(evidence_url, mode="html")
+                    evidence = {"status": "fetched", "content": _strip_html(raw_html or "")[:2000]}
+                except Exception as e:
+                    evidence = {"status": "inaccessible", "content": str(e)[:200]}
+
             prompt = f"""
 You are a GenLayer validator resolving a funded parametric outage cover claim for Threshold.
 
@@ -503,7 +523,7 @@ POLICY:
 - Policy ID: {policy.policy_id}
 - Covered service: {policy.service_slug}
 - Covered component: {policy.covered_component}
-- Coverage window: {policy.start_ts} to {policy.end_ts} (unix timestamps)
+- Coverage window: {self._ts_to_iso(policy.start_ts)} to {self._ts_to_iso(policy.end_ts)} (raw unix timestamps: {policy.start_ts} to {policy.end_ts})
 - Coverage amount: {int(policy.coverage_amount)} wei
 
 CLAIM:
@@ -523,6 +543,9 @@ not evidence. If the fetched public evidence does not independently support the
 claim, return insufficient_evidence, no_incident, outside_policy_window, or another
 non-paying verdict as appropriate.
 If evidence status is not "fetched", return insufficient_evidence.
+Compare dates using the human-readable coverage window dates given above (YYYY-MM-DD),
+not the raw unix timestamps. Only return outside_policy_window if the incident's date in
+the evidence clearly falls before the coverage window's start date or after its end date.
 
 ALLOWED VERDICTS: qualifying_outage | major_outage | minor_degradation | scheduled_maintenance | not_covered_component | outside_policy_window | insufficient_evidence | excluded_event | no_incident
 ALLOWED PAYOUT BANDS: none | partial | full | manual_review
