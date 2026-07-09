@@ -11,10 +11,14 @@ today every pool has a single `owner` address and all deposits are commingled un
 counters, with no per-depositor share tracking or proportional withdrawal rights.
 
 Payouts depend on public evidence URLs being accessible to validators. If a status page or
-incident-history URL is down, rate-limited, or requires authentication at resolution time, the
-claim will most likely resolve as `insufficient_evidence` with no payout - there is no retry
-mechanism or evidence re-submission flow in v1 beyond filing a new claim (which isn't supported
-for a policy that already has one).
+incident-history URL is down, rate-limited, blocked by bot protection, or requires authentication
+at resolution time, the claim will most likely resolve as `insufficient_evidence` with no payout -
+there is no retry mechanism or evidence re-submission flow in v1 beyond filing a new claim (which
+isn't supported for a policy that already has one).
+
+The claimant's incident summary is never treated as proof by itself. It only tells validators what
+to look for in the fetched public evidence. If the fetched evidence does not independently support
+the summary, the intended outcome is a non-paying verdict.
 
 Approved payouts are emitted as finalized external value transfers
 (`_Recipient(...).emit_transfer(value=...)`) within the same `resolve_claim` transaction - the
@@ -25,6 +29,9 @@ transfer request finalized by GenLayer consensus, not a separately-awaited recei
 
 - **One claim per policy.** Once a claim is submitted, a policy cannot accept a second claim even
   if the first is denied. This avoids unbounded multi-claim risk accounting in v1.
+- **One evidence URL per claim.** v1 deliberately keeps claim resolution small: a single public
+  URL is fetched and judged against the policy. A deeper version should support multiple public
+  evidence sources with explicit conflict rules.
 - **No premium market.** `min_premium_bps` is a fixed rate set once at pool creation by the
   underwriter; there is no dynamic pricing based on utilization or claims history.
 - **No partial withdrawals during an open claim window per-policy** - withdrawals are governed

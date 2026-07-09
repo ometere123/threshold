@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { getClaim, getPolicy, resolveClaim, EXPLORER_URL } from "@/lib/contract";
-import type { Claim, Policy } from "@/lib/types";
+import { getClaim, resolveClaim } from "@/lib/contract";
+import type { Claim } from "@/lib/types";
 import { formatDateTime, formatGEN, getClaimStatusChip, formatVerdict, getVerdictColor, getPayoutBandColor, explorerTxUrl } from "@/lib/utils";
 import { SettlementRail } from "@/components/shared/SettlementRail";
 import { useWallet } from "@/store/wallet";
@@ -14,7 +14,6 @@ export default function ClaimDetailPage() {
   const { isConnected, provider, connect } = useWallet();
 
   const [claim, setClaim] = useState<Claim | null>(null);
-  const [policy, setPolicy] = useState<Policy | null>(null);
   const [loading, setLoading] = useState(true);
   const [resolving, setResolving] = useState(false);
   const [resolveTxHash, setResolveTxHash] = useState("");
@@ -23,10 +22,6 @@ export default function ClaimDetailPage() {
   async function load() {
     const c = await getClaim(claimId);
     setClaim(c);
-    if (c) {
-      const p = await getPolicy(c.policy_id);
-      setPolicy(p);
-    }
     setLoading(false);
   }
 
@@ -49,8 +44,8 @@ export default function ClaimDetailPage() {
         }
         if (attempts > 40) { clearInterval(poll); setResolving(false); }
       }, 3000);
-    } catch (err: any) {
-      setError(err?.message || "Resolution failed");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Resolution failed");
       setResolving(false);
     }
   }
@@ -132,8 +127,8 @@ export default function ClaimDetailPage() {
           {claim.evidence_url}
         </a>
         <p className="text-xs text-slate-500 mt-2">
-          GenLayer validators fetch this URL directly and independently reach consensus on its
-          content via the Equivalence Principle - no single validator&apos;s reading is trusted alone.
+          GenLayer validators fetch this URL directly. The incident summary is context only; the
+          fetched public evidence must independently support the claim before any payout can occur.
         </p>
       </div>
 

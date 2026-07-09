@@ -147,6 +147,52 @@ class Threshold(gl.Contract):
         raw = gl.message_raw["datetime"]
         return int(datetime.fromisoformat(raw.replace("Z", "+00:00")).timestamp())
 
+    def _is_rejected_evidence_url(self, url: str) -> bool:
+        lowered = url.strip().lower()
+        if not (lowered.startswith("https://") or lowered.startswith("http://")):
+            return True
+
+        host = lowered.split("://", 1)[1].split("/", 1)[0].split("@")[-1].split(":", 1)[0]
+        host = host.strip("[]")
+
+        exact_blocklist = {
+            "",
+            "localhost",
+            "0.0.0.0",
+            "127.0.0.1",
+            "::1",
+        }
+        private_prefixes = (
+            "127.",
+            "10.",
+            "192.168.",
+            "169.254.",
+            "172.16.",
+            "172.17.",
+            "172.18.",
+            "172.19.",
+            "172.20.",
+            "172.21.",
+            "172.22.",
+            "172.23.",
+            "172.24.",
+            "172.25.",
+            "172.26.",
+            "172.27.",
+            "172.28.",
+            "172.29.",
+            "172.30.",
+            "172.31.",
+        )
+        auth_markers = ("/login", "/signin", "/sign-in", "/auth", "/oauth", "/session")
+
+        return (
+            host in exact_blocklist
+            or host.endswith(".localhost")
+            or host.startswith(private_prefixes)
+            or any(marker in lowered for marker in auth_markers)
+        )
+
     # ------------------------------------------------------------------
     # Pools
     # ------------------------------------------------------------------
@@ -440,9 +486,8 @@ class Threshold(gl.Contract):
 
         evidence_url = claim.evidence_url
 
-        lowered = evidence_url.lower()
-        if any(bad in lowered for bad in ("localhost", "127.0.0.1", "192.168.", "login", "signin")):
-            evidence = {"status": "rejected_private_url", "content": ""}
+        if self._is_rejected_evidence_url(evidence_url):
+            evidence = {"status": "rejected_non_public_url", "content": ""}
         else:
             try:
                 page = gl.get_webpage(evidence_url, mode="text")
@@ -463,7 +508,7 @@ POLICY:
 
 CLAIM:
 - Claim ID: {claim.claim_id}
-- Incident summary: {claim.incident_summary}
+- Incident summary from claimant: {claim.incident_summary}
 
 EVIDENCE (public URL: {evidence_url}):
 Status: {evidence.get('status')}
@@ -473,6 +518,11 @@ Content:
 INSTRUCTIONS:
 Decide whether the evidence supports a qualifying outage of the covered component
 within the coverage window. Do not invent facts not present in the evidence.
+Treat the claimant's incident summary only as context for what to look for. It is
+not evidence. If the fetched public evidence does not independently support the
+claim, return insufficient_evidence, no_incident, outside_policy_window, or another
+non-paying verdict as appropriate.
+If evidence status is not "fetched", return insufficient_evidence.
 
 ALLOWED VERDICTS: qualifying_outage | major_outage | minor_degradation | scheduled_maintenance | not_covered_component | outside_policy_window | insufficient_evidence | excluded_event | no_incident
 ALLOWED PAYOUT BANDS: none | partial | full | manual_review

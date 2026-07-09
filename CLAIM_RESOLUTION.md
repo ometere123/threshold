@@ -22,11 +22,15 @@ v1 (see [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md)).
 `resolve_claim(claim_id)` is a public write method (not payable) that anyone can call once a claim
 is `submitted`. It:
 
-1. Fetches `claim.evidence_url` via `gl.get_webpage(url, mode="text")`, rejecting obviously private
-   URLs (`localhost`, private IP ranges, login/signin pages) before ever attempting the fetch.
-2. Builds a prompt containing the policy terms (service, component, coverage window, coverage
-   amount) and the claim (incident summary, fetched evidence content).
-3. Passes that prompt through `gl.nondet.exec_prompt(...)`, wrapped in
+1. Rejects non-public or authentication-oriented URLs before fetching. v1 blocks non-HTTP(S)
+   schemes, localhost, loopback hosts, common private IPv4 ranges (`10.*`, `172.16.*` -
+   `172.31.*`, `192.168.*`), link-local addresses, and login/auth/session paths.
+2. Fetches `claim.evidence_url` via `gl.get_webpage(url, mode="text")`.
+3. Builds a prompt containing the policy terms (service, component, coverage window, coverage
+   amount), the claimant's incident summary, and the fetched evidence content. The prompt states
+   that the summary is only context, not evidence: if the fetched public evidence does not
+   independently support the claim, validators should return a non-paying verdict.
+4. Passes that prompt through `gl.nondet.exec_prompt(...)`, wrapped in
    `gl.eq_principle.prompt_comparative(...)` so that GenLayer validators can independently execute
    the LLM call and reach agreement on an equivalence class of results rather than requiring
    byte-identical output.

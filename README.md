@@ -23,7 +23,7 @@ reaches consensus on a verdict - the result is written to contract state, not a 
 
 - **Funded, not promised** - every pool capital figure is backed by a real `payable` GEN transfer, verifiable on StudioNet
 - **Deterministic pricing** - premiums are a fixed basis-points calculation on-chain, never LLM-decided
-- **AI consensus resolution** - GenLayer validators independently fetch evidence and reach agreement via `gl.eq_principle.prompt_comparative` before any verdict is stored
+- **Consensus where it matters** - money moves only after validators fetch public evidence and agree on a settlement verdict via `gl.eq_principle.prompt_comparative`
 - **Real payout path** - approved claims trigger an on-chain GEN transfer to the policyholder, not a UI status change
 - **No off-chain storage** - no database, no admin panel. All pool, policy, and claim state lives in the GenLayer contract
 
@@ -55,10 +55,15 @@ When policy expires, reserved exposure is released
 
 ## Claim resolution
 
-`resolve_claim` fetches the claim's evidence URL via `gl.get_webpage`, builds a prompt from the
-policy terms and the fetched content, and runs it through `gl.nondet.exec_prompt` wrapped in
-`gl.eq_principle.prompt_comparative` so GenLayer validators must independently agree on the verdict
-category, payout band, and confidence band before anything is written to state.
+`resolve_claim` first rejects non-public or authentication-oriented evidence URLs, then fetches the
+claim's evidence URL via `gl.get_webpage`. The claimant's incident summary is treated only as
+context: if the fetched public evidence does not independently support the claim, the contract
+should resolve to a non-paying verdict such as `insufficient_evidence` or `no_incident`.
+
+The resolver builds a prompt from the policy terms and fetched content, then runs it through
+`gl.nondet.exec_prompt` wrapped in `gl.eq_principle.prompt_comparative` so GenLayer validators must
+independently agree on the verdict category, payout band, and confidence band before anything is
+written to state.
 
 Allowed verdicts:
 
@@ -163,6 +168,8 @@ node scripts/test-contract.mjs                 # 20-case funded integration test
 - [`FRONTEND.md`](FRONTEND.md) - page map and wallet integration
 - [`TESTING.md`](TESTING.md) - the 20-case integration test suite
 - [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md) - a walkthrough script for demoing the protocol live
+- [`PROJECT_EVOLUTION.md`](PROJECT_EVOLUTION.md) - what changed across iterations and why this is one continued project
+- [`VERIFICATION.md`](VERIFICATION.md) - current deployment and reviewer verification checklist
 - [`KNOWN_LIMITATIONS.md`](KNOWN_LIMITATIONS.md) - honest constraints of the current MVP
 
 ## Disclaimer

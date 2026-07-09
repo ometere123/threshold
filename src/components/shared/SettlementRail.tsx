@@ -6,7 +6,7 @@ const STEPS = [
   { key: "submitted", label: "Claim Submitted" },
   { key: "resolving", label: "Evidence Evaluated" },
   { key: "resolved", label: "Verdict Reached" },
-  { key: "paid", label: "Payout Sent" },
+  { key: "paid", label: "Transfer Emitted" },
 ];
 
 function getStepIndex(status: ClaimStatus): number {

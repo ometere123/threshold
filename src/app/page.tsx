@@ -13,7 +13,7 @@ const HOW_ITEMS = [
   { step: "02", title: "Policyholder Buys Cover", desc: "A policyholder chooses a coverage amount and duration. The premium is calculated deterministically and paid as real GEN." },
   { step: "03", title: "Contract Reserves Exposure", desc: "The coverage amount is reserved against the pool's available capital - it cannot be double-committed or withdrawn." },
   { step: "04", title: "Incident + Public Evidence", desc: "When an outage occurs, the policyholder submits a claim with a public evidence URL and incident summary." },
-  { step: "05", title: "GenLayer Validator Consensus", desc: "Validators fetch the evidence, evaluate it against the policy terms, and reach non-deterministic consensus on a verdict." },
+  { step: "05", title: "GenLayer Validator Consensus", desc: "Validators fetch public evidence, ignore unsupported claimant assertions, and reach consensus on a settlement verdict." },
   { step: "06", title: "Real GEN Payout or No Payout", desc: "If the claim qualifies, the contract sends real GEN to the policyholder from the funded pool. If not, no payout is made." },
 ];
 
@@ -156,7 +156,7 @@ export default function Landing() {
           Ready to fund a risk pool?
         </h2>
         <p className="text-slate-400 mb-8 max-w-md mx-auto">
-          Deposit real GEN. Underwrite outage cover. Let GenLayer validators resolve claims against public evidence.
+          Deposit real GEN. Underwrite outage cover. Let GenLayer validators resolve money-moving claims against public evidence.
         </p>
         <Link href="/app" className="btn-primary text-base px-8 py-3 inline-block">
           Open Risk Desk →
