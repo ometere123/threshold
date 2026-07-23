@@ -10,7 +10,7 @@ import { formatUnixTimestamp, formatGEN, formatServiceSlug } from "@/lib/utils";
 function ClaimForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isConnected, provider, connect } = useWallet();
+  const { address, isConnected, provider, connect } = useWallet();
 
   const prefillPolicyId = searchParams.get("policyId") || "";
 
@@ -51,7 +51,7 @@ function ClaimForm() {
 
     try {
       const claimId = `claim_${Date.now()}`;
-      const tx = await submitClaim(provider, {
+      const tx = await submitClaim(provider, address, {
         policy_id: form.policy_id,
         claim_id: claimId,
         evidence_url: form.evidence_url.trim(),

@@ -9,7 +9,7 @@ import { parseGEN, formatGENPlain } from "@/lib/utils";
 
 export default function NewPoolPage() {
   const router = useRouter();
-  const { isConnected, isCorrectNetwork, provider, connect, switchNetwork } = useWallet();
+  const { address, isConnected, isCorrectNetwork, provider, connect, switchNetwork } = useWallet();
 
   const [form, setForm] = useState({
     pool_id: `pool_${Date.now()}`,
@@ -43,6 +43,7 @@ export default function NewPoolPage() {
     try {
       const tx = await createPool(
         provider,
+        address,
         {
           pool_id: form.pool_id,
           service_slug: form.service_slug,

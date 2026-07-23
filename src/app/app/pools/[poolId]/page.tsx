@@ -38,7 +38,7 @@ export default function PoolDetailPage() {
     setBusy(true);
     setError("");
     try {
-      const tx = await depositToPool(provider, poolId, parseGEN(depositAmount));
+      const tx = await depositToPool(provider, address, poolId, parseGEN(depositAmount));
       setTxHash(tx.hash);
       setTimeout(load, 3000);
     } catch (err: any) {
@@ -52,7 +52,7 @@ export default function PoolDetailPage() {
     setBusy(true);
     setError("");
     try {
-      const tx = await withdrawAvailable(provider, poolId, parseGEN(withdrawAmount), withdrawRecipient);
+      const tx = await withdrawAvailable(provider, address, poolId, parseGEN(withdrawAmount), withdrawRecipient);
       setTxHash(tx.hash);
       setTimeout(load, 3000);
     } catch (err: any) {
@@ -67,7 +67,7 @@ export default function PoolDetailPage() {
     setBusy(true);
     setError("");
     try {
-      const tx = await updatePoolStatus(provider, poolId, !pool.active);
+      const tx = await updatePoolStatus(provider, address, poolId, !pool.active);
       setTxHash(tx.hash);
       setTimeout(load, 3000);
     } catch (err: any) {

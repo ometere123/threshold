@@ -9,7 +9,7 @@ import { formatGEN, formatGENPlain, parseGEN, formatServiceSlug } from "@/lib/ut
 
 export default function NewPolicyPage() {
   const router = useRouter();
-  const { isConnected, isCorrectNetwork, provider, connect, switchNetwork } = useWallet();
+  const { address, isConnected, isCorrectNetwork, provider, connect, switchNetwork } = useWallet();
 
   const [pools, setPools] = useState<Pool[]>([]);
   const [poolId, setPoolId] = useState("");
@@ -62,6 +62,7 @@ export default function NewPolicyPage() {
       const policyId = `policy_${Date.now()}`;
       const tx = await buyPolicy(
         provider,
+        address,
         {
           pool_id: poolId,
           policy_id: policyId,

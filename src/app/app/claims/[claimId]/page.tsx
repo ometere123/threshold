@@ -11,7 +11,7 @@ import { useWallet } from "@/store/wallet";
 
 export default function ClaimDetailPage() {
   const { claimId } = useParams<{ claimId: string }>();
-  const { isConnected, provider, connect } = useWallet();
+  const { address, isConnected, provider, connect } = useWallet();
 
   const [claim, setClaim] = useState<Claim | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,7 +31,7 @@ export default function ClaimDetailPage() {
     setResolving(true);
     setError("");
     try {
-      const tx = await resolveClaim(provider, claimId);
+      const tx = await resolveClaim(provider, address, claimId);
       setResolveTxHash(tx.hash);
       let attempts = 0;
       const poll = setInterval(async () => {

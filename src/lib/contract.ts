@@ -5,6 +5,7 @@
 
 import { createClient } from "genlayer-js";
 import type { Pool, Policy, Claim, DashboardStats } from "./types";
+import type { InjectedWalletProvider } from "@/store/wallet";
 
 const CONTRACT_ADDRESS =
   (process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "") as `0x${string}`;
@@ -16,11 +17,34 @@ export const EXPLORER_URL =
   "https://explorer-studio.genlayer.com";
 
 export function getReadClient() {
-  return createClient({ endpoint: RPC_URL } as any);
+  return createClient({ endpoint: RPC_URL });
 }
 
-export function getWriteClient() {
-  return createClient({ endpoint: RPC_URL } as any);
+type WalletAddress = `0x${string}`;
+
+function getWalletWriteClient(provider: InjectedWalletProvider | null, account: string | null) {
+  if (!provider || !account) {
+    throw new Error("Connect a wallet before sending a transaction.");
+  }
+
+  return createClient({
+    endpoint: RPC_URL,
+    account: account as WalletAddress,
+    provider,
+  });
+}
+
+function normalizeWriteResult(result: unknown): { hash: string } {
+  if (typeof result === "string") return { hash: result };
+  if (
+    result &&
+    typeof result === "object" &&
+    "hash" in result &&
+    typeof (result as { hash: unknown }).hash === "string"
+  ) {
+    return { hash: (result as { hash: string }).hash };
+  }
+  throw new Error("Transaction submitted, but the SDK did not return a transaction hash.");
 }
 
 export function getContractAddress() {
@@ -165,7 +189,8 @@ export async function getContractBalance(): Promise<string> {
 // value is always in wei (bigint). Callers should build it with parseGEN().
 
 export async function createPool(
-  provider: unknown,
+  provider: InjectedWalletProvider | null,
+  account: string | null,
   args: {
     pool_id: string;
     service_slug: string;
@@ -177,8 +202,8 @@ export async function createPool(
   },
   depositWei: bigint
 ): Promise<{ hash: string }> {
-  const client = getWriteClient();
-  return (client as any).writeContract({
+  const client = getWalletWriteClient(provider, account);
+  const result = await client.writeContract({
     address: CONTRACT_ADDRESS,
     functionName: "create_pool",
     value: depositWei,
@@ -191,58 +216,62 @@ export async function createPool(
       args.min_duration_seconds,
       args.max_duration_seconds,
     ],
-    provider,
   });
+  return normalizeWriteResult(result);
 }
 
 export async function depositToPool(
-  provider: unknown,
+  provider: InjectedWalletProvider | null,
+  account: string | null,
   poolId: string,
   amountWei: bigint
 ): Promise<{ hash: string }> {
-  const client = getWriteClient();
-  return (client as any).writeContract({
+  const client = getWalletWriteClient(provider, account);
+  const result = await client.writeContract({
     address: CONTRACT_ADDRESS,
     functionName: "deposit_to_pool",
     value: amountWei,
     args: [poolId],
-    provider,
   });
+  return normalizeWriteResult(result);
 }
 
 export async function withdrawAvailable(
-  provider: unknown,
+  provider: InjectedWalletProvider | null,
+  account: string | null,
   poolId: string,
   amountWei: bigint,
   recipient: string
 ): Promise<{ hash: string }> {
-  const client = getWriteClient();
-  return (client as any).writeContract({
+  const client = getWalletWriteClient(provider, account);
+  const result = await client.writeContract({
     address: CONTRACT_ADDRESS,
     functionName: "withdraw_available",
     value: 0n,
     args: [poolId, amountWei, recipient],
-    provider,
   });
+  return normalizeWriteResult(result);
 }
 
 export async function updatePoolStatus(
-  provider: unknown,
+  provider: InjectedWalletProvider | null,
+  account: string | null,
   poolId: string,
   active: boolean
 ): Promise<{ hash: string }> {
-  const client = getWriteClient();
-  return (client as any).writeContract({
+  const client = getWalletWriteClient(provider, account);
+  const result = await client.writeContract({
     address: CONTRACT_ADDRESS,
     functionName: "update_pool_status",
     value: 0n,
     args: [poolId, active],
-    provider,
   });
+  return normalizeWriteResult(result);
 }
 
 export async function buyPolicy(
-  provider: unknown,
+  provider: InjectedWalletProvider | null,
+  account: string | null,
   args: {
     pool_id: string;
     policy_id: string;
@@ -251,32 +280,34 @@ export async function buyPolicy(
   },
   premiumWei: bigint
 ): Promise<{ hash: string }> {
-  const client = getWriteClient();
-  return (client as any).writeContract({
+  const client = getWalletWriteClient(provider, account);
+  const result = await client.writeContract({
     address: CONTRACT_ADDRESS,
     functionName: "buy_policy",
     value: premiumWei,
     args: [args.pool_id, args.policy_id, args.coverage_amount, args.duration_seconds],
-    provider,
   });
+  return normalizeWriteResult(result);
 }
 
 export async function expirePolicy(
-  provider: unknown,
+  provider: InjectedWalletProvider | null,
+  account: string | null,
   policyId: string
 ): Promise<{ hash: string }> {
-  const client = getWriteClient();
-  return (client as any).writeContract({
+  const client = getWalletWriteClient(provider, account);
+  const result = await client.writeContract({
     address: CONTRACT_ADDRESS,
     functionName: "expire_policy",
     value: 0n,
     args: [policyId],
-    provider,
   });
+  return normalizeWriteResult(result);
 }
 
 export async function submitClaim(
-  provider: unknown,
+  provider: InjectedWalletProvider | null,
+  account: string | null,
   args: {
     policy_id: string;
     claim_id: string;
@@ -284,28 +315,29 @@ export async function submitClaim(
     incident_summary: string;
   }
 ): Promise<{ hash: string }> {
-  const client = getWriteClient();
-  return (client as any).writeContract({
+  const client = getWalletWriteClient(provider, account);
+  const result = await client.writeContract({
     address: CONTRACT_ADDRESS,
     functionName: "submit_claim",
     value: 0n,
     args: [args.policy_id, args.claim_id, args.evidence_url, args.incident_summary],
-    provider,
   });
+  return normalizeWriteResult(result);
 }
 
 export async function resolveClaim(
-  provider: unknown,
+  provider: InjectedWalletProvider | null,
+  account: string | null,
   claimId: string
 ): Promise<{ hash: string }> {
-  const client = getWriteClient();
-  return (client as any).writeContract({
+  const client = getWalletWriteClient(provider, account);
+  const result = await client.writeContract({
     address: CONTRACT_ADDRESS,
     functionName: "resolve_claim",
     value: 0n,
     args: [claimId],
-    provider,
   });
+  return normalizeWriteResult(result);
 }
 
 /** Deterministic premium calculation, mirrors the contract's on-chain formula. */

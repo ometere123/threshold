@@ -10,7 +10,7 @@ import { useWallet } from "@/store/wallet";
 
 export default function PolicyDetailPage() {
   const { policyId } = useParams<{ policyId: string }>();
-  const { isConnected, provider, connect } = useWallet();
+  const { address, isConnected, provider, connect } = useWallet();
   const [policy, setPolicy] = useState<Policy | null>(null);
   const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +31,7 @@ export default function PolicyDetailPage() {
     setExpiring(true);
     setError("");
     try {
-      const tx = await expirePolicy(provider, policyId);
+      const tx = await expirePolicy(provider, address, policyId);
       setTxHash(tx.hash);
       setTimeout(load, 3000);
     } catch (err: any) {
