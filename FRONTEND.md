@@ -25,15 +25,29 @@ writes throw.
 ## Wallet integration
 
 `src/store/wallet.tsx` wraps `window.ethereum` (MetaMask, Rabby, or any injected EIP-1193
-provider) via `ethers.BrowserProvider`. It exposes `connect`, `disconnect`, `switchNetwork` (adds
-GenLayer StudioNet, chain ID `61999`, if the wallet doesn't already have it), and reactive
-`accountsChanged` / `chainChanged` listeners.
+provider) directly. It exposes `connect`, `disconnect`, `switchNetwork` (adds GenLayer StudioNet,
+chain ID `61999`, if the wallet doesn't already have it), and reactive `accountsChanged` /
+`chainChanged` listeners.
+
+The raw injected provider is intentionally preserved. `genlayer-js` expects the browser write client
+to be created with both:
+
+```ts
+createClient({
+  endpoint: RPC_URL,
+  account: address as `0x${string}`,
+  provider: window.ethereum,
+});
+```
+
+Passing an `ethers.BrowserProvider` wrapper into individual `writeContract` calls is not sufficient:
+the SDK treats that as a walletless client and rejects write transactions.
 
 ## Contract client
 
-`src/lib/contract.ts` wraps `genlayer-js` (`createClient`, `createAccount` for the read client;
-the injected wallet's `provider` is threaded through for writes). Every write function accepts a
-`value: bigint` in wei and passes it straight to `writeContract`:
+`src/lib/contract.ts` wraps `genlayer-js`. Reads use a walletless client. Writes create a
+wallet-aware client from the connected account and raw injected provider. Every write function
+accepts a `value: bigint` in wei and passes it straight to `writeContract`:
 
 ```ts
 await client.writeContract({

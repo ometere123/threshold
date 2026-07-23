@@ -115,9 +115,21 @@ available_capital = pool_capital - reserved_exposure
 |---|---|
 | Intelligent contract | GenLayer Python - `@allow_storage` dataclasses, `TreeMap` storage, `gl.public.write.payable`, `gl.nondet.exec_prompt`, `gl.eq_principle.prompt_comparative` |
 | Frontend | Next.js 16 App Router (Turbopack) · TypeScript · Tailwind CSS 4 |
-| Web3 | `genlayer-js` 1.1.8 · `ethers` (injected wallet provider) |
+| Web3 | `genlayer-js` 1.1.8 · injected EIP-1193 wallet provider |
 | Wallet | Any injected EIP-1193 provider - MetaMask, Rabby, etc. |
 | Storage | None - all state on-chain |
+
+## Browser wallet writes
+
+The live app signs write transactions through the connected browser wallet. `src/store/wallet.tsx`
+keeps the raw injected EIP-1193 provider (`window.ethereum`), and `src/lib/contract.ts` creates a
+wallet-aware GenLayer write client with both the connected `account` address and that raw
+`provider`. This is required by `genlayer-js` for payable/write methods such as `create_pool`,
+`buy_policy`, `submit_claim`, and `resolve_claim`.
+
+This frontend wallet wiring does not change the deployed intelligent contract. If only the browser
+write path changes, Vercel needs a frontend redeploy, but the GenLayer contract does not need to be
+redeployed.
 
 ## Repository layout
 
